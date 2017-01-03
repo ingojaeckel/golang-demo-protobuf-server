@@ -28,22 +28,21 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 	var someRequest messages.SomeRequest
 
 	if err := proto.Unmarshal(bytes, &someRequest); err != nil {
-		w.WriteHeader(400)
-		w.Header().Add("Content-Type", "application/octet-stream")
-
 		v := err.Error()
-		resp := messages.SomeResponse{Value: &v}
-		respBytes, _ := proto.Marshal(&resp)
-		w.Write(respBytes)
+		sendBytes(w, 400, messages.SomeResponse{Value: &v})
 		return
 	}
-	fmt.Printf("Unmarshalled request to: %v\n", someRequest.GetParam())
+	fmt.Printf("Request: %v\n", someRequest.GetParam())
 
-	w.WriteHeader(200)
-	w.Header().Add("Content-Type", "application/octet-stream")
 	v := "success"
-	resp := messages.SomeResponse{Value: &v}
+	sendBytes(w, 200, messages.SomeResponse{Value: &v})
+}
+
+func sendBytes(w http.ResponseWriter, status int, resp messages.SomeResponse) {
 	respBytes, _ := proto.Marshal(&resp)
-	fmt.Printf("Replying back bytes: %v\n", respBytes)
+	fmt.Printf("Response: %v\n", respBytes)
+
+	w.WriteHeader(status)
+	w.Header().Add("Content-Type", "application/octet-stream")
 	w.Write(respBytes)
 }
