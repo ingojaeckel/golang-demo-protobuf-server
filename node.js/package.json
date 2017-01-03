@@ -1,8 +1,0 @@
-{
-  "name": "protobuf-example-client",
-  "version": "0.1",
-  "description": "protobuf and node.js",
-  "dependencies": {
-    "express": "^4.10.2"
-  }
-}
