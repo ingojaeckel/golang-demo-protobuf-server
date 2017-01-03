@@ -1,0 +1,10 @@
+package messages;
+syntax = "proto3";
+
+message SomeRequest {
+  optional int32 param = 1;
+}
+
+message SomeResponse {
+  optional string value = 1;
+}
